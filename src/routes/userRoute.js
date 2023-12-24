@@ -2,6 +2,6 @@ import express from "express";
 
 const router = express.Router();
 
-router.route('/text').get(test);
+router.route("/").get(getAllUser);
 
 export default router;
