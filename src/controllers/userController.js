@@ -25,6 +25,7 @@ export const createUser = async (req, res) => {
 
     res.status(201).json({
       status: 'success',
+      token: await user.generateToken(),
       user
     })
 
@@ -43,9 +44,6 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-
-
-
     const isExist = await User.find({ email })
 
 
@@ -61,6 +59,8 @@ export const loginUser = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
+      //generate token
+      token: await isExist[0].generateToken(),
       userId: isExist[0]._id
     })
 
