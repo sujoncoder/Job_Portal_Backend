@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import colors from "colors";
 import dotenv from "dotenv";
+import internRouter from '../src/routes/internRoute.js'
+import userRouter from'../src/routes/userRoute.js'
 dotenv.config();
 
 // app initialize
@@ -20,8 +22,9 @@ app.use(cors());
 
 
 // route
-app.get('/', (req, res) => {
-    res.status(200).send("Wellcome to my server.")
-});
+app.use('/api/v1/users',  userRouter)
+app.use('/api/v1/intern', internRouter)
+
+
 
 export default app;

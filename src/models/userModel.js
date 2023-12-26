@@ -4,15 +4,15 @@ const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: [true, "user first name is required"],
-        minlength: [8, "firstname should be at least 8 character"],
+
         maxlength: [12, "firstname should be at least 12 character"],
         trim: true
     },
-    firstname: {
+    lastname: {
         type: String,
         required: [true, "user last name is required"],
-        minlength: [8, "lirstname should be at least 8 character"],
-        maxlength: [12, "lirstname should be at least 12 character"],
+
+        maxlength: [12, "lastname should be at least 12 character"],
         trim: true
     },
     email: {
@@ -28,24 +28,25 @@ const userSchema = new mongoose.Schema({
         minlength: [6, "password should be at least 6 character"],
         trim: true
     },
-    phone: {
-        type: String,
-        required: [true, "user phone number is required"],
-        trim: true
-    },
-    gender: {
-        type: string,
-        required: [true, "gender is required"],
-        enum: ["Male", "Female"]
-    },
-    country: {
-        type: string,
-        required: [true, "country is required"]
-    },
-    photo: {
-        type: String,
-        default: avater.png
-    }
+    // phone: {
+    //     type: String,
+    //     required: [true, "user phone number is required"],
+    //     trim: true
+    // },
+    // gender: {
+    //     type: String,
+    //     required: [true, "gender is required"],
+    //     enum: ["Male", "Female"]
+    // },
+    // country: {
+    //     type: String,
+    //     required: [true, "country is required"]
+    // },
+    // photo: {
+    //     type: String,
+    //     required: [true, "photo is required"]
+
+    // }
 
 }, { timestamps: true });
 
