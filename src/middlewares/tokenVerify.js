@@ -1,0 +1,34 @@
+import jwt from "jsonwebtoken";
+
+import Intern from '../models/intenShipModel.js'
+const verifyToken = async (req, res, next) => {
+
+    try {
+        const token = req.headers.authorization
+        if (!token) {
+            return res.status(401).send('Unauthorized')
+        }
+
+        const splitedToken = token.split(' ')[1]
+
+        const accessToken = process.env.JWT_SECRET_KEY;
+
+        const verify = await jwt.verify(splitedToken, accessToken, async (err, decode) => {
+
+            if (err) {
+                return res.status(401).send('invalid token')
+            }
+            const userId = await Intern.findOne({ id: decode.userId })
+
+            req.userId = userId
+
+        })
+
+        next()
+
+    } catch (err) {
+        return res.status(401).send('authenticatin failed', err.message)
+    }
+}
+
+export default verifyToken

@@ -39,28 +39,34 @@ export const createUser = async (req, res) => {
 }
 
 export const loginUser = async (req, res) => {
-  console.log('bodyyyyy', req.body.password)
 
   try {
     const { email, password } = req.body;
 
     const isExist = await User.find({ email })
 
+    console.log(isExist)
 
     if (!isExist) {
       return res.status(400).send('user not exist')
     }
-
+    //  check password
     const isValidPassword = await bcrypt.compare(password, isExist[0].password)
+    // generateToken
+    const token = await isExist[0].generateToken()
 
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')
     }
+    // res.cookie("jwt", token, {
+    //   expires: new Date(),
+    //   httpOnly: true,
+    // })
 
     res.status(200).json({
       status: 'success',
       //generate token
-      token: await isExist[0].generateToken(),
+      token: token,
       userId: isExist[0]._id
     })
 
