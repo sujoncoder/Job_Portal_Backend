@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import Intern from '../models/intenShipModel.js'
+import Intern from '../models/jobsModel.js'
 const verifyToken = async (req, res, next) => {
     try {
         const token = req.headers.authorization;

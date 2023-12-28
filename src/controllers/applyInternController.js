@@ -1,4 +1,4 @@
-import ApplyIntern from "../models/applyInternModel"
+import ApplyIntern from "../models/applyInternModel.js"
 
 
 
@@ -8,7 +8,7 @@ export const applyIntern = async (req, res) => {
         const result = ApplyIntern.create(req.body)
         res.status(201).json({
             status: 'success',
-            result
+            data: result
         })
     } catch (err) {
 

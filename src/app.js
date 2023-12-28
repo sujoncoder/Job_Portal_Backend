@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import colors from "colors";
 import dotenv from "dotenv";
-import internRouter from '../src/routes/internRoute.js';
+import internRouter from './routes/jobRoute.js';
+import applyInternRouter from '../src/routes/applyInternRoute.js';
 import authRoute from './routes/authRoute.js';
 import userRoute from './routes/userRoute.js';
 import cookieParser from 'cookie-parser'
@@ -17,7 +18,7 @@ const app = express();
 
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minutes
-    limit: 5, // Limit each IP to 5 requests per `window` (here, per 1 minutes).
+    limit: 10, // Limit each IP to 5 requests per `window` (here, per 1 minutes).
     message: "Too many request please try again later."
 });
 
@@ -39,5 +40,6 @@ app.use(handleServerError);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/intern', internRouter);
+app.use('/api/v1/applyintern', applyInternRouter);
 
 export default app;

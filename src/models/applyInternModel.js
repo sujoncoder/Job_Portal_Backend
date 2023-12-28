@@ -8,7 +8,7 @@ const applyInternSchema = mongoose.Schema({
         ref: "Intern"
 
     },
-    coverletter: {
+    coverleter: {
         type: String,
         required: true
     }

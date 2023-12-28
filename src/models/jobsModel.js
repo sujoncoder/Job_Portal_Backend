@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const internSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, "title is required"],
@@ -32,8 +32,18 @@ const internSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        required: [true, "type required"],
-        enum: ["Internship", "Internship with job offer"]
+        required: [true, " type required"],
+        enum: ["Internship", "Job"]
+    },
+    locationtype: {
+        type: String,
+        required: [true, " interntype required"],
+        enum: ["Remote", "Onside"]
+    },
+    jobtimetype: {
+        type: String,
+        required: [true, " interntype required"],
+        enum: ["Full-Time", "Part-Time"]
     },
     duration: {
         type: String,
@@ -42,10 +52,16 @@ const internSchema = new mongoose.Schema({
     location: {
         type: String,
         required: [true, "location is required"],
+
+    },
+    salary: {
+        type: Number,
+        required: [true, "salary is required"],
+
     }
 }, { timestamps: true });
 
 
-const Intern = mongoose.model("Intern", internSchema);
+const Job = mongoose.model("Job", jobSchema);
 
-export default Intern;
+export default Job;

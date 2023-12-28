@@ -1,20 +1,31 @@
-import Intern from "../models/intenShipModel.js";
+import Job from "../models/jobsModel.js";
 
-export const getAllIntern = async (req, res, next) => {
-  console.log('req query', req.query)
+export const getJobs = async (req, res, next) => {
+
   try {
 
+    //pagination
     let page = Number(req.query.page) || 1
     let limit = Number(req.query.limit) || 2
-    let skip = (page - 1) * limit
+    // let skip = (page - 1) * limit
 
-    const allintern = await Intern.find({}).skip(skip).limit(limit);
-    const totalArticle = await Intern.countDocuments()
-    const pageCount = Math.ceil(totalArticle / limit)
+
+
+    const allintern = await Job.find({}).limit(limit).skip((page - 1) * limit);
+    //count document
+    const totalIntern = await Intern.countDocuments()
     res.status(200).json({
       status: 'success',
+
       data: allintern,
-      pageCount
+      pagination: {
+        totalPage: Math.ceil(totalIntern / limit),
+        currentpage: page,
+        previouspage: page - 1 > 0 ? page - 1 : null,
+        nextpage: page + 1 <= Math.ceil(totalIntern / limit) ? page + 1 : null
+
+      }
+
     })
   } catch (err) {
     res.status(400).json({
@@ -26,9 +37,9 @@ export const getAllIntern = async (req, res, next) => {
 
 
 //post intern
-export const postIntern = async (req, res, next) => {
+export const postJob = async (req, res, next) => {
   try {
-    const response = await Intern.create(req.body);
+    const response = await Job.create(req.body);
 
     if (res.length === 0) {
       res.status(401).json({
@@ -51,11 +62,11 @@ export const postIntern = async (req, res, next) => {
 
 
 // get intern by id
-export const getInternById = async (req, res, next) => {
+export const getJobById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const response = await Intern.findById({ _id: id })
+    const response = await Job.findById({ _id: id })
     res.status(200).json({
       status: 'success',
       response
