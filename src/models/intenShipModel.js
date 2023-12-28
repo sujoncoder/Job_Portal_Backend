@@ -45,6 +45,7 @@ const internSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+
 const Intern = mongoose.model("Intern", internSchema);
 
 export default Intern;

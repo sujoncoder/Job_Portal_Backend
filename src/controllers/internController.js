@@ -1,12 +1,20 @@
 import Intern from "../models/intenShipModel.js";
 
 export const getAllIntern = async (req, res, next) => {
-
+  console.log('req query', req.query)
   try {
-    const allintern = await Intern.find({});
+
+    let page = Number(req.query.page) || 1
+    let limit = Number(req.query.limit) || 2
+    let skip = (page - 1) * limit
+
+    const allintern = await Intern.find({}).skip(skip).limit(limit);
+    const totalArticle = await Intern.countDocuments()
+    const pageCount = Math.ceil(totalArticle / limit)
     res.status(200).json({
       status: 'success',
-      data: allintern
+      data: allintern,
+      pageCount
     })
   } catch (err) {
     res.status(400).json({
