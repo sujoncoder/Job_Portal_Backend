@@ -1,37 +1,66 @@
 import Job from "../models/jobsModel.js";
 
 export const getJobs = async (req, res, next) => {
-
   try {
 
+
+    const filters = { ...req.query }
+
+    const excludeFields = ['page', 'limit', 'type', 'title', 'jobtimetype', 'locationtype']
+
+    excludeFields.forEach(field => delete filters[field])
+    console.log('original', req.query)
+    console.log('exclude', filters)
+    console.log(req.query)
+
+    const queries = {}
+    //type search
+    if (req.query.type) {
+      const type = req.query.type
+      queries.type = type
+    }
+    //title search
+    if (req.query.title) {
+      const titleSearch = req.query.title
+      queries.title = { $regex: titleSearch, $options: "i" }
+    }
+    //jobtimetype search
+    if (req.query.jobtimetype) {
+      const jobtimetype = req.query.jobtimetype
+      queries.jobtimetype = { $regex: jobtimetype, $options: "i" }
+    }
+    if (req.query.locationtype) {
+      const locationtype = req.query.locationtype
+      queries.locationtype = { $regex: locationtype, $options: "i" }
+    }
     //pagination
-    let page = Number(req.query.page) || 1
-    let limit = Number(req.query.limit) || 2
-    // let skip = (page - 1) * limit
+    let page = Number(req.query.page) || 1;
+    let limit = Number(req.query.limit) || 3;
 
+    const jobs = await Job.find(queries, filters).limit(limit).skip((page - 1) * limit)
+    // Count total documents based on the applied filters
+    const totaljob = await Job.countDocuments(jobs);
 
+    if (jobs.length === 0) {
+      return res.status(400).send('no jobs  found')
+    }
 
-    const allintern = await Job.find({}).limit(limit).skip((page - 1) * limit);
-    //count document
-    const totalIntern = await Intern.countDocuments()
     res.status(200).json({
       status: 'success',
-
-      data: allintern,
+      data: jobs,
+      length: jobs.length,
       pagination: {
-        totalPage: Math.ceil(totalIntern / limit),
+        totalPage: Math.ceil(totaljob / limit),
         currentpage: page,
         previouspage: page - 1 > 0 ? page - 1 : null,
-        nextpage: page + 1 <= Math.ceil(totalIntern / limit) ? page + 1 : null
-
-      }
-
-    })
+        nextpage: page + 1 <= Math.ceil(totaljob / limit) ? page + 1 : null,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       status: 'failed',
-      message: err.message
-    })
+      message: err.message,
+    });
   }
 };
 
