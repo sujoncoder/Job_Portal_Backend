@@ -11,7 +11,6 @@ import morgan from "morgan";
 import rateLimit from 'express-rate-limit'
 import handleClientError from "./middlewares/clientSiteError.js";
 import handleServerError from "./middlewares/serverSiteError.js";
-dotenv.config();
 
 // app initialize
 const app = express();

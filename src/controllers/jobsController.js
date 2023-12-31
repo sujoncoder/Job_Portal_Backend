@@ -2,6 +2,10 @@ import Job from "../models/jobsModel.js";
 
 export const getJobs = async (req, res, next) => {
   try {
+    const titleSearch = req.query.search || "";
+    // const countrySearch = req.query.country || "";
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
 
     const filters = { ...req.query }
@@ -9,9 +13,6 @@ export const getJobs = async (req, res, next) => {
     const excludeFields = ['page', 'limit', 'type', 'title', 'jobtimetype', 'locationtype']
 
     excludeFields.forEach(field => delete filters[field])
-    console.log('original', req.query)
-    console.log('exclude', filters)
-    console.log(req.query)
 
     const queries = {}
     //type search
@@ -32,10 +33,7 @@ export const getJobs = async (req, res, next) => {
     if (req.query.locationtype) {
       const locationtype = req.query.locationtype
       queries.locationtype = { $regex: locationtype, $options: "i" }
-    }
-    //pagination
-    let page = Number(req.query.page) || 1;
-    let limit = Number(req.query.limit) || 3;
+    };
 
     const jobs = await Job.find(queries, filters).limit(limit).skip((page - 1) * limit)
     // Count total documents based on the applied filters
@@ -65,10 +63,25 @@ export const getJobs = async (req, res, next) => {
 };
 
 
-//post intern
+// post job
 export const postJob = async (req, res, next) => {
+  const { title, aboutwork, aboutcompany, skills, numberofopening, status, jobtype, locationtype, jobtimetype, duration, location, salary } = req.body;
+
   try {
-    const response = await Job.create(req.body);
+    const response = await Job.create({
+      title,
+      aboutwork,
+      aboutcompany,
+      skills,
+      numberofopening,
+      status,
+      jobtype,
+      locationtype,
+      jobtimetype,
+      duration,
+      location,
+      salary
+    });
 
     if (res.length === 0) {
       res.status(401).json({
@@ -90,7 +103,7 @@ export const postJob = async (req, res, next) => {
 };
 
 
-// get intern by id
+// get job by id
 export const getJobById = async (req, res, next) => {
   const { id } = req.params;
 

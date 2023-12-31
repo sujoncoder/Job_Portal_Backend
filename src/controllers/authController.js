@@ -3,20 +3,19 @@ import bcrypt from 'bcrypt';
 import mailer from "../utils/Email.js";
 import jwt from 'jsonwebtoken'
 import { createJSONWebToken } from "../utils/Token.js";
+import { JWT_SECRET_KEY } from "../secret/secret.js";
 
-// Regular expression for basic email validation
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@0-9]+$/i;
 
 export const signUp = async (req, res) => {
   const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
 
   try {
     // Check if the email is in a valid format
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       return res.status(400).send("Invalid email format");
     }
 
-    const existEmail = await User.findOne({ email });
+    const existEmail = await User.exists({ email });
 
     // email checked
     if (existEmail) {
@@ -38,7 +37,7 @@ export const signUp = async (req, res) => {
     };
 
     // create jwt
-    const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, process.env.JWT_SECRET_KEY, "10m");
+    const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, JWT_SECRET_KEY, "10m");
     const clientUrl = process.env.CLIENT_URL
     //prepare mail
     const maildata = {
@@ -108,17 +107,12 @@ export const login = async (req, res) => {
     //  check password
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
+    // generateToken
+    const token = await isExist[0].generateToken();
+
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')
     };
-
-    // generateToken
-    const token = createJSONWebToken({ email }, process.env.JWT_SECRET_KEY, "10m");
-
-    // res.cookie("jwt", token, {
-    //   expires: new Date(),
-    //   httpOnly: true,
-    // });
 
     // token set into cokkie
     res.cookie("accessToken", token);
