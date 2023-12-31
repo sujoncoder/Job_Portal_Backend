@@ -1,13 +1,9 @@
 import User from "../models/userModel.js";
 import bcrypt from 'bcrypt';
-<<<<<<< HEAD
-import { EMAIL_REGEX } from "../secret/secret.js";
-
-=======
 import mailer from "../utils/Email.js";
 import jwt from 'jsonwebtoken'
 import { createJSONWebToken } from "../utils/Token.js";
->>>>>>> 5d96b15740bdd918559e8034a7d5284ca1dca86e
+import { JWT_SECRET_KEY } from "../secret/secret.js";
 
 
 export const signUp = async (req, res) => {
@@ -46,7 +42,7 @@ export const signUp = async (req, res) => {
 
 
     // create jwt
-    const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, process.env.JWT_SECRET_KEY, "10m");
+    const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, JWT_SECRET_KEY, "10m");
     const clientUrl = process.env.CLIENT_URL
     //prepare mail
     const maildata = {
