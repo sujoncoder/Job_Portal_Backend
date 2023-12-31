@@ -10,8 +10,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@0-9]+$/i;
 export const signUp = async (req, res) => {
   const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
 
-  console.log(req.body)
-
   try {
     // Check if the email is in a valid format
     if (!emailRegex.test(email)) {
@@ -24,8 +22,6 @@ export const signUp = async (req, res) => {
     if (existEmail) {
       return res.status(400).send("user email already exist")
     };
-
-
     // Hashed password by bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -41,8 +37,6 @@ export const signUp = async (req, res) => {
       role
     };
 
-
-
     // create jwt
     const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, process.env.JWT_SECRET_KEY, "10m");
     const clientUrl = process.env.CLIENT_URL
@@ -52,10 +46,7 @@ export const signUp = async (req, res) => {
       subject: 'Account Activation Mail',
       html: ` <h3>Hello ${firstname}</h3>
              <p> Cleack here to <a href="${clientUrl}/api/v1/auth/activate/${token}" target="_blank">Activate your account</a? </p>
-             
-        
         `
-
     }
 
     mailer(maildata)
@@ -64,7 +55,6 @@ export const signUp = async (req, res) => {
     res.status(201).json({
       status: 'success',
       message: 'Verify your email  first',
-
       token: token
     });
   } catch (err) {
@@ -74,6 +64,8 @@ export const signUp = async (req, res) => {
   }
 };
 
+
+//verify email  and save the user in database
 export const emailVerify = async (req, res) => {
 
   try {
@@ -101,12 +93,8 @@ export const emailVerify = async (req, res) => {
     })
 
   } catch (err) {
-
-
   }
 }
-
-
 // login user
 export const login = async (req, res) => {
   try {
@@ -120,14 +108,12 @@ export const login = async (req, res) => {
     //  check password
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
-    console.log(isValidPassword);
-
-    // generateToken
-    const token = await isExist[0].generateToken();
-
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')
     };
+
+    // generateToken
+    const token = createJSONWebToken({ email }, process.env.JWT_SECRET_KEY, "10m");
 
     // res.cookie("jwt", token, {
     //   expires: new Date(),

@@ -3,7 +3,7 @@ import cors from "cors";
 import colors from "colors";
 import dotenv from "dotenv";
 import jobRouter from './routes/jobRoute.js';
-import applyInternRouter from '../src/routes/applyInternRoute.js';
+import applyJobRouter from '../src/routes/applyJobRoute.js';
 import authRoute from './routes/authRoute.js';
 import userRoute from './routes/userRoute.js';
 import cookieParser from 'cookie-parser'
@@ -40,6 +40,6 @@ app.use(handleServerError);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/jobs', jobRouter);
-app.use('/api/v1/applyintern', applyInternRouter);
+app.use('/api/v1/applyjob', applyJobRouter);
 
 export default app;
