@@ -59,21 +59,22 @@ const userSchema = new mongoose.Schema({
 
 
 // jwt token
-userSchema.methods.generateToken = async function () {
-    try {
-        return jwt.sign({
-            userId: this._id.toString(),
-        },
-            JWT_SECRET_KEY,
-            {
-                expiresIn: "1d"
-            }
-        )
+// userSchema.methods.generateToken = async function () {
+//     try {
+//         return jwt.sign({
+//             userId: this._id.toString(),
+//             user: this
+//         },
+//             process.env.JWT_SECRET_KEY,
+//             {
+//                 expiresIn: "2m"
+//             }
+//         )
 
-    } catch (err) {
-        console.error(err.message)
-    }
-};
+//     } catch (err) {
+//         console.error(err.message)
+//     }
+// };
 const User = mongoose.model("User", userSchema);
 
 export default User;

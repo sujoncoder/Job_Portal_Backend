@@ -1,7 +1,13 @@
 import User from "../models/userModel.js";
 import bcrypt from 'bcrypt';
+<<<<<<< HEAD
 import { EMAIL_REGEX } from "../secret/secret.js";
 
+=======
+import mailer from "../utils/Email.js";
+import jwt from 'jsonwebtoken'
+import { createJSONWebToken } from "../utils/Token.js";
+>>>>>>> 5d96b15740bdd918559e8034a7d5284ca1dca86e
 
 
 export const signUp = async (req, res) => {
@@ -37,16 +43,31 @@ export const signUp = async (req, res) => {
       role
     };
 
-    const user = await User.create({
-      ...userWithoutPassword,
-      password: hashedPassword,
-    });
+
+
+    // create jwt
+    const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, process.env.JWT_SECRET_KEY, "10m");
+    const clientUrl = process.env.CLIENT_URL
+    //prepare mail
+    const maildata = {
+      email: email,
+      subject: 'Account Activation Mail',
+      html: ` <h3>Hello ${firstname}</h3>
+             <p> Cleack here to <a href="${clientUrl}/api/v1/auth/activate/${token}" target="_blank">Activate your account</a? </p>
+             
+        
+        `
+
+    }
+
+    mailer(maildata)
 
     // Generate token and respond with sanitized user
     res.status(201).json({
       status: 'success',
-      token: await user.generateToken(),
-      user: userWithoutPassword,
+      message: 'Verify your email  first',
+
+      token: token
     });
   } catch (err) {
     res.status(401).send({
@@ -54,6 +75,38 @@ export const signUp = async (req, res) => {
     });
   }
 };
+
+export const emailVerify = async (req, res) => {
+
+  try {
+    const token = req.body.token
+    if (!token) {
+      return res.status(404).send('Token not found')
+    }
+
+    const decodedtoken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+
+    const userExist = await User.exists({ email: decodedtoken.email })
+
+    if (userExist) {
+      return res.status(409).send('user with this email  already exist please login')
+    }
+    if (!decodedtoken) {
+      return res.status(400).send('user verification failed')
+    }
+
+    const user = await User.create(decodedtoken)
+
+    res.status(201).send({
+      status: "success",
+      message: "user verification successful"
+    })
+
+  } catch (err) {
+
+
+  }
+}
 
 
 // login user

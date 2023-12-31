@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import colors from "colors";
+import dotenv from "dotenv";
 import jobRouter from './routes/jobRoute.js';
 import applyInternRouter from '../src/routes/applyInternRoute.js';
 import authRoute from './routes/authRoute.js';
