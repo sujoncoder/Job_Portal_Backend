@@ -16,9 +16,9 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: [true, "aboutcompany is required"]
     },
-    skillrequired: {
+    skills: {
         type: String,
-        required: [true, "skillrequired is required"]
+        required: [true, "skill is required"]
     },
     numberofopening: {
         type: String,
@@ -30,7 +30,7 @@ const jobSchema = new mongoose.Schema({
         minlength: [3, "last name should be at least 8 character"],
         trim: true
     },
-    type: {
+    jobtype: {
         type: String,
         required: [true, " type required"],
         enum: ["Internship", "Job"]
@@ -52,7 +52,6 @@ const jobSchema = new mongoose.Schema({
     location: {
         type: String,
         required: [true, "location is required"],
-
     },
     salary: {
         type: Number,

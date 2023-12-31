@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { PHOTO_PATH, EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const userSchema = new mongoose.Schema({
     firstname: {
@@ -23,7 +22,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         validate: {
-            validator: (value) => emailRegex.test(value),
+            validator: (value) => EMAIL_REGEX.test(value),
             message: 'Invalid email format',
         }
     },
@@ -49,7 +48,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: "avater.png"
+        default: PHOTO_PATH,
     },
     role: {
         type: String,
@@ -65,7 +64,7 @@ userSchema.methods.generateToken = async function () {
         return jwt.sign({
             userId: this._id.toString(),
         },
-            process.env.JWT_SECRET_KEY,
+            JWT_SECRET_KEY,
             {
                 expiresIn: "1d"
             }

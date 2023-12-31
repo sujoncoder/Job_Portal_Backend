@@ -1,22 +1,20 @@
 import User from "../models/userModel.js";
 import bcrypt from 'bcrypt';
+import { EMAIL_REGEX } from "../secret/secret.js";
 
 
-// Regular expression for basic email validation
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@0-9]+$/i;
 
 export const signUp = async (req, res) => {
   const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
 
-  console.log(req.body)
 
   try {
     // Check if the email is in a valid format
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       return res.status(400).send("Invalid email format");
     }
 
-    const existEmail = await User.findOne({ email });
+    const existEmail = await User.exists({ email });
 
     // email checked
     if (existEmail) {
@@ -71,19 +69,12 @@ export const login = async (req, res) => {
     //  check password
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
-    console.log(isValidPassword);
-
     // generateToken
     const token = await isExist[0].generateToken();
 
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')
     };
-
-    // res.cookie("jwt", token, {
-    //   expires: new Date(),
-    //   httpOnly: true,
-    // });
 
     // token set into cokkie
     res.cookie("accessToken", token);

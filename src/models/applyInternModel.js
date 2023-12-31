@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 
 const applyInternSchema = mongoose.Schema({
-
     internId: {
         type: ObjectId,
         ref: "Intern"

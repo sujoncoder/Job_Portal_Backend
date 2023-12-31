@@ -1,8 +1,7 @@
 import express from "express";
 import cors from "cors";
 import colors from "colors";
-import dotenv from "dotenv";
-import internRouter from './routes/jobRoute.js';
+import jobRouter from './routes/jobRoute.js';
 import applyInternRouter from '../src/routes/applyInternRoute.js';
 import authRoute from './routes/authRoute.js';
 import userRoute from './routes/userRoute.js';
@@ -11,7 +10,6 @@ import morgan from "morgan";
 import rateLimit from 'express-rate-limit'
 import handleClientError from "./middlewares/clientSiteError.js";
 import handleServerError from "./middlewares/serverSiteError.js";
-dotenv.config();
 
 // app initialize
 const app = express();
@@ -39,7 +37,7 @@ app.use(handleServerError);
 // routing middlewares
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/auth', authRoute);
-app.use('/api/v1/intern', internRouter);
+app.use('/api/v1/jobs', jobRouter);
 app.use('/api/v1/applyintern', applyInternRouter);
 
 export default app;
