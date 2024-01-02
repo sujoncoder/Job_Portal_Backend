@@ -3,18 +3,18 @@ import bcrypt from 'bcrypt';
 import mailer from "../utils/Email.js";
 import jwt from 'jsonwebtoken'
 import { createJSONWebToken } from "../utils/Token.js";
-import { JWT_SECRET_KEY } from "../secret/secret.js";
+import { EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
 
 export const signUp = async (req, res) => {
   const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
-
+  console.log(req.file);
 
   try {
     // Check if the email is in a valid format
-    if (!EMAIL_REGEX.test(email)) {
+    if (!EMAIL_REGEX) {
       return res.status(400).send("Invalid email format");
-    }
+    };
 
     const existEmail = await User.exists({ email });
 
