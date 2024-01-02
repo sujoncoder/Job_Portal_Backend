@@ -8,7 +8,10 @@ import { EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
 export const signUp = async (req, res) => {
   const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
+<<<<<<< HEAD
   console.log(req.file);
+=======
+>>>>>>> 64fb4c83686c76281b8525d9cd7de2bacb597ba1
 
   try {
     // Check if the email is in a valid format
@@ -22,8 +25,6 @@ export const signUp = async (req, res) => {
     if (existEmail) {
       return res.status(400).send("user email already exist")
     };
-
-
     // Hashed password by bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -35,11 +36,9 @@ export const signUp = async (req, res) => {
       phone,
       gender,
       country,
-      photo,
+      photo: req.file.path,
       role
     };
-
-
 
     // create jwt
     const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, JWT_SECRET_KEY, "10m");
@@ -50,10 +49,7 @@ export const signUp = async (req, res) => {
       subject: 'Account Activation Mail',
       html: ` <h3>Hello ${firstname}</h3>
              <p> Cleack here to <a href="${clientUrl}/api/v1/auth/activate/${token}" target="_blank">Activate your account</a? </p>
-             
-        
         `
-
     }
 
     mailer(maildata)
@@ -62,7 +58,6 @@ export const signUp = async (req, res) => {
     res.status(201).json({
       status: 'success',
       message: 'Verify your email  first',
-
       token: token
     });
   } catch (err) {
@@ -72,6 +67,8 @@ export const signUp = async (req, res) => {
   }
 };
 
+
+//verify email  and save the user in database
 export const emailVerify = async (req, res) => {
 
   try {
@@ -99,12 +96,8 @@ export const emailVerify = async (req, res) => {
     })
 
   } catch (err) {
-
-
   }
 }
-
-
 // login user
 export const login = async (req, res) => {
   try {
@@ -119,7 +112,7 @@ export const login = async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
     // generateToken
-    const token = await isExist[0].generateToken();
+    const token = createJSONWebToken({ email, password }, JWT_SECRET_KEY, "10m");
 
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')
