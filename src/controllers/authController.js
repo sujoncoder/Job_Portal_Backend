@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import mailer from "../utils/Email.js";
 import jwt from 'jsonwebtoken'
 import { createJSONWebToken } from "../utils/Token.js";
-import { JWT_SECRET_KEY } from "../secret/secret.js";
+import { EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
 
 export const signUp = async (req, res) => {
@@ -11,7 +11,7 @@ export const signUp = async (req, res) => {
 
   try {
     // Check if the email is in a valid format
-    if (!EMAIL_REGEX.test(email)) {
+    if (!EMAIL_REGEX) {
       return res.status(400).send("Invalid email format");
     }
 
@@ -32,7 +32,7 @@ export const signUp = async (req, res) => {
       phone,
       gender,
       country,
-      photo,
+      photo: req.file.path,
       role
     };
 
@@ -108,7 +108,7 @@ export const login = async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
     // generateToken
-    const token = await isExist[0].generateToken();
+    const token = createJSONWebToken({ email, password }, JWT_SECRET_KEY, "10m");
 
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')

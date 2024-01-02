@@ -3,27 +3,49 @@ import mongoose from "mongoose"
 
 //apply
 export const applyJob = async (req, res) => {
-
     try {
-        const result = ApplyJob.create(req.body)
-        console.log(req.body)
+        const { userId, jobId, coverleter, resume, available } = req.body;
+
+        // Check if the user has already applied for this job
+        const existingApplication = await ApplyJob.findOne({ userId, jobId });
+
+        if (existingApplication) {
+            return res.status(400).json({
+                status: 'failed',
+                message: 'You have already applied for this job.'
+            });
+        }
+
+
+        console.log('req file', req.file)
+        // Check if req.file exists (uploaded file information)
+        if (!req.file) {
+            return res.status(400).json({ status: 'failed', message: 'Resume file is required' });
+        }
+
+
+        // If not, create a new application
+        const result = await ApplyJob.create({
+            userId,
+            jobId,
+            coverleter,
+            resume: req.file.path,
+            available,
+
+        });
+
         res.status(201).json({
             status: 'success',
-            "data": {
-                "message": "Operation completed successfully",
-                "result": result
-            }
-        })
+            message: 'Applied successfully',
+            result
+        });
     } catch (err) {
-
         res.status(400).json({
             status: 'failed',
             message: err.message
-        })
+        });
     }
-
-
-}
+};
 
 export const getAllApplication = async (req, res) => {
     try {

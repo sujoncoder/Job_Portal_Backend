@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer'
 import { SMTP_USER_NAME, SMTP_USER_PASSWORD } from '../secret/secret.js'
 
-
-
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,

@@ -12,3 +12,4 @@ export const EMAIL_REGEX = "/^[^\s@]+@[^\s@]+\.[^\s@0-9]+$/i";
 export const PHOTO_PATH = "./public/images/users";
 export const ALLOWED_FILE_TYPES = ["png", "jpg", "jpeg", "PNG", "JPG", "JPEG"];
 export const MAX_FILE_SIZE = 10485760;
+export const PDF_PATH = "./public/pdfs/"

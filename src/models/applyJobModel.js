@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { PDF_PATH } from "../secret/secret.js";
 const { ObjectId } = mongoose.Schema.Types;
 
 const applyJobSchema = mongoose.Schema({
@@ -16,6 +17,16 @@ const applyJobSchema = mongoose.Schema({
     coverleter: {
         type: String,
         required: true
+    },
+    resume: {
+        type: String,
+        required: true
+
+    },
+    available: {
+        type: String,
+        required: true
+
     }
 })
 
