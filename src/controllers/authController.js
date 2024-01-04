@@ -8,10 +8,6 @@ import { EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
 export const signUp = async (req, res) => {
   const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
-<<<<<<< HEAD
-  console.log(req.file);
-=======
->>>>>>> 64fb4c83686c76281b8525d9cd7de2bacb597ba1
 
   try {
     // Check if the email is in a valid format
