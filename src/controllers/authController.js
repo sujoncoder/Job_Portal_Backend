@@ -31,13 +31,11 @@ export const signUp = async (req, res) => {
       email,
       phone,
       gender,
-      country,
-      photo: req.file.path,
-      role
+
     };
 
     // create jwt
-    const token = createJSONWebToken({ firstname, lastname, email, password, phone, gender, country, photo, role }, JWT_SECRET_KEY, "10m");
+    const token = createJSONWebToken({ firstname, lastname, email, password }, JWT_SECRET_KEY, "10m");
     const clientUrl = process.env.CLIENT_URL
     //prepare mail
     const maildata = {
@@ -75,6 +73,8 @@ export const emailVerify = async (req, res) => {
 
     const decodedtoken = jwt.verify(token, process.env.JWT_SECRET_KEY)
 
+    console.log('deee', decodedtoken)
+
     const userExist = await User.exists({ email: decodedtoken.email })
 
     if (userExist) {
@@ -85,6 +85,8 @@ export const emailVerify = async (req, res) => {
     }
 
     const user = await User.create(decodedtoken)
+    // token set into cokkie
+    res.cookie("accessToken", token);
 
     res.status(201).send({
       status: "success",
@@ -108,7 +110,7 @@ export const login = async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
     // generateToken
-    const token = createJSONWebToken({ email, password }, JWT_SECRET_KEY, "10m");
+    const token = createJSONWebToken({ email }, JWT_SECRET_KEY, "10m");
 
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')

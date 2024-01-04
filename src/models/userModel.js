@@ -34,25 +34,24 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: [true, "user phone number is required"],
+
         trim: true
     },
     gender: {
         type: String,
-        required: [true, "gender is required"],
+
         enum: ["Male", "Female"]
     },
     country: {
         type: String,
-        required: [true, "country is required"]
+
     },
     photo: {
         type: String,
-        default: PHOTO_PATH,
     },
     role: {
         type: String,
-        required: true,
+
         enum: ["Admin", "Employer", "Student"],
     }
 }, { timestamps: true });

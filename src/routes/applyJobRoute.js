@@ -5,11 +5,12 @@ const router = express.Router()
 import { applyJob, getAllApplication, getUserApplications } from "../controllers/applyJobController.js";
 import { uploadPDF } from "../middlewares/uploadPdf.js";
 // router.use(verifyToken)
-router.route('/:id').get(getUserApplications)
+// router.route.get(getUserApplications)
 router
     .route('/')
     .post(uploadPDF, applyJob)
-    .get(getAllApplication)
+    .get(getUserApplications)
+// .get(getAllApplication)
 
 
 

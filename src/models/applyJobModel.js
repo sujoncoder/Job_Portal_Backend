@@ -14,6 +14,11 @@ const applyJobSchema = mongoose.Schema({
         ref: "Job"
 
     },
+    userEmail: {
+        type: String,
+        required: true
+
+    },
     coverleter: {
         type: String,
         required: true
@@ -24,6 +29,16 @@ const applyJobSchema = mongoose.Schema({
 
     },
     available: {
+        type: String,
+        required: true
+
+    },
+    jobtitle: {
+        type: String,
+        required: true
+
+    },
+    companyName: {
         type: String,
         required: true
 

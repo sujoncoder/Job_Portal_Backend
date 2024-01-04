@@ -4,7 +4,8 @@ import mongoose from "mongoose"
 //apply
 export const applyJob = async (req, res) => {
     try {
-        const { userId, jobId, coverleter, resume, available } = req.body;
+        const { userId, jobId, coverleter, resume, available, userEmail,
+            jobtitle, companyName } = req.body;
 
         // Check if the user has already applied for this job
         const existingApplication = await ApplyJob.findOne({ userId, jobId });
@@ -17,7 +18,7 @@ export const applyJob = async (req, res) => {
         }
 
 
-        console.log('req file', req.file)
+
         // Check if req.file exists (uploaded file information)
         if (!req.file) {
             return res.status(400).json({ status: 'failed', message: 'Resume file is required' });
@@ -31,6 +32,9 @@ export const applyJob = async (req, res) => {
             coverleter,
             resume: req.file.path,
             available,
+            userEmail,
+            jobtitle,
+            companyName
 
         });
 
@@ -75,11 +79,15 @@ export const getAllApplication = async (req, res) => {
     }
 }
 export const getUserApplications = async (req, res) => {
-    const { id } = req.params
-    try {
-        const result = await ApplyJob.find({ userId: id })
+    const { email } = req.query
 
-        if (!result) {
+    try {
+
+        // const match = await ApplyJob.find({ }).populate('userId')
+        const result = await ApplyJob.find({ userEmail: email })
+
+
+        if (!result || result.length === 0) {
             // Handle the case where no job application is found with the given ID
             res.status(404).json({
                 status: 'failed',
@@ -89,7 +97,7 @@ export const getUserApplications = async (req, res) => {
         }
         res.status(200).json({
             status: 'success',
-            result,
+            data: result,
         });
     } catch (err) {
         // Handle other errors
