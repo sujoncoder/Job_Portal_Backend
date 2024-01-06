@@ -101,6 +101,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const isExist = await User.find({ email });
+    const useridneed = isExist[0]._id
 
     if (!isExist[0]) {
       return res.status(400).send('user not exist ! please sign up.')
@@ -110,7 +111,7 @@ export const login = async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, isExist[0].password);
 
     // generateToken
-    const token = createJSONWebToken({ email }, JWT_SECRET_KEY, "10m");
+    const token = createJSONWebToken({ email, useridneed }, JWT_SECRET_KEY, "1d");
 
     if (!isValidPassword) {
       return res.status(400).send('authentication failed')

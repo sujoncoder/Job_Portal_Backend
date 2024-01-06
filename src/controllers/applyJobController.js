@@ -81,10 +81,7 @@ export const getUserApplications = async (req, res) => {
     const { email } = req.query
 
     try {
-
-        // const match = await ApplyJob.find({ }).populate('userId')
         const result = await ApplyJob.find({ userEmail: email })
-
 
         if (!result || result.length === 0) {
             // Handle the case where no job application is found with the given ID

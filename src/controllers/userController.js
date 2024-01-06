@@ -18,3 +18,61 @@ export const getUsers = async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 };
+
+export const getUserbyId = async (req, res) => {
+  const { id } = req.params
+  console.log(id)
+  try {
+
+    const userdata = await User.find({ _id: id })
+    res.status(200).json({
+      status: 'Success',
+      data: userdata
+    })
+
+  } catch (error) {
+
+    res.status(400).send({
+      status: "failed",
+      message: error.message
+    })
+  }
+}
+
+export const updateUser = async (req, res) => {
+
+  const { id } = req.query
+  const userInfo = {
+    ...req.body,
+    photo: req.file.path,
+  };
+  try {
+
+    const update = await User.findByIdAndUpdate({ _id: id }, userInfo)
+
+    res.status(200).json({
+      status: 'success',
+      data: update
+    })
+
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    })
+  }
+}
+
+export const updateUserWithoutProfileImg = async (req, res) => {
+  const { id } = req.query
+  try {
+
+    const updateUser = await User.findByIdAndUpdate({ _id: id }, req.body)
+    res.status(200).json({
+      status: 'success',
+      data: updateUser
+    })
+
+  } catch (error) {
+    res.status(400).send({ message: error.message })
+  }
+}
