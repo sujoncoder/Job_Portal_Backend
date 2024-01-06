@@ -111,7 +111,7 @@ export const getJobById = async (req, res, next) => {
     const response = await Job.findById({ _id: id })
     res.status(200).json({
       status: 'success',
-      response
+      data: response
     })
 
   } catch (err) {
