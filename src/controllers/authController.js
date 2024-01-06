@@ -96,6 +96,8 @@ export const emailVerify = async (req, res) => {
   } catch (err) {
   }
 }
+
+
 // login user
 export const login = async (req, res) => {
   try {

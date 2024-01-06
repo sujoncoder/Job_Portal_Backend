@@ -39,8 +39,9 @@ export const getUserbyId = async (req, res) => {
   }
 }
 
-export const updateUser = async (req, res) => {
 
+// update user
+export const updateUser = async (req, res) => {
   const { id } = req.query
   const userInfo = {
     ...req.body,
@@ -62,6 +63,8 @@ export const updateUser = async (req, res) => {
   }
 }
 
+
+// update user !profile
 export const updateUserWithoutProfileImg = async (req, res) => {
   const { id } = req.query
   try {
@@ -75,4 +78,4 @@ export const updateUserWithoutProfileImg = async (req, res) => {
   } catch (error) {
     res.status(400).send({ message: error.message })
   }
-}
+};
