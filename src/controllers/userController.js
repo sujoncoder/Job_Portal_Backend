@@ -1,5 +1,5 @@
 import User from "../models/userModel.js";
-
+import cloudinary from 'cloudinary'
 
 // this eature only admin
 export const getUsers = async (req, res) => {
@@ -18,12 +18,10 @@ export const getUsers = async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 };
-
-
-
-// get user by id
+//getr
 export const getUserbyId = async (req, res) => {
   const { id } = req.params
+
   try {
     const userdata = await User.find({ _id: id })
     res.status(200).json({
@@ -44,12 +42,19 @@ export const getUserbyId = async (req, res) => {
 // update user
 export const updateUser = async (req, res) => {
   const { id } = req.query
-  const userInfo = {
-    ...req.body,
-    photo: req.file.path,
-  };
 
   try {
+
+    //cloudenary
+    const file = req.file.path
+
+    const cloud = await cloudinary.uploader.upload(file)
+    console.log(cloud.url)
+    const userInfo = {
+      ...req.body,
+      photo: cloud.url
+    };
+
     const update = await User.findByIdAndUpdate({ _id: id }, userInfo)
 
     res.status(200).json({
