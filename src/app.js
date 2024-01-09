@@ -11,7 +11,8 @@ import morgan from "morgan";
 import rateLimit from 'express-rate-limit'
 import handleClientError from "./middlewares/clientSiteError.js";
 import handleServerError from "./middlewares/serverSiteError.js";
-
+import cloudinary from 'cloudinary'
+import { CLOUD_API_KEY, CLOUD_API_SECRET, CLOUD_NAME } from "./secret/secret.js";
 // app initialize
 const app = express();
 
@@ -35,8 +36,17 @@ app.use(limiter);
 app.use(cookieParser());
 
 // customes middlewares
-// app.use(handleClientError);
+
+
 app.use(handleServerError);
+//clowdinary
+
+
+cloudinary.config({
+    cloud_name: CLOUD_NAME,
+    api_key: CLOUD_API_KEY,
+    api_secret: CLOUD_API_SECRET,
+});
 
 // routing middlewares
 app.use('/api/v1/users', userRoute);
