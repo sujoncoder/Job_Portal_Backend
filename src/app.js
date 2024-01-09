@@ -10,7 +10,7 @@ import manageAccountRoute from './routes/manageAccountRoute.js';
 import cookieParser from 'cookie-parser'
 import morgan from "morgan";
 import rateLimit from 'express-rate-limit'
-import handleClientError from "./middlewares/clientSiteError.js";
+// import handleClientError from "./middlewares/clientSiteError.js";
 import handleServerError from "./middlewares/serverSiteError.js";
 
 // app initialize

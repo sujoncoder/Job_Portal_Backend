@@ -19,11 +19,12 @@ export const getUsers = async (req, res) => {
   }
 };
 
+
+
+// get user by id
 export const getUserbyId = async (req, res) => {
   const { id } = req.params
-  console.log(id)
   try {
-
     const userdata = await User.find({ _id: id })
     res.status(200).json({
       status: 'Success',
@@ -47,8 +48,8 @@ export const updateUser = async (req, res) => {
     ...req.body,
     photo: req.file.path,
   };
-  try {
 
+  try {
     const update = await User.findByIdAndUpdate({ _id: id }, userInfo)
 
     res.status(200).json({
@@ -61,14 +62,13 @@ export const updateUser = async (req, res) => {
       message: error.message
     })
   }
-}
+};
 
 
-// update user !profile
+// update user !profile image
 export const updateUserWithoutProfileImg = async (req, res) => {
   const { id } = req.query
   try {
-
     const updateUser = await User.findByIdAndUpdate({ _id: id }, req.body)
     res.status(200).json({
       status: 'success',
