@@ -1,1 +1,5 @@
 PORT = 5000
+DATABASE_URL = mongodb://localhost:27017/job_portal
+JWT_SECRET_KEY = "hQ4dS5ABINvsWRvTvfp8F6R47YqkxqVxdNYdya/lFn0="
+SMPT_USER_NAME = sujonsheikh.in@gmail.com
+SMPT_USER_PASSWORD = kdva lxni ecfk ddrq
