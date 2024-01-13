@@ -7,13 +7,23 @@ import { EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
 
 export const signUp = async (req, res) => {
-  const { firstname, lastname, email, password, phone, gender, country, photo, role } = req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    password,
+    phone,
+    gender,
+    country,
+    photo,
+    role
+  } = req.body;
 
   try {
     // Check if the email is in a valid format
     if (!EMAIL_REGEX) {
       return res.status(400).send("Invalid email format");
-    }
+    };
 
     const existEmail = await User.exists({ email });
 
@@ -21,6 +31,7 @@ export const signUp = async (req, res) => {
     if (existEmail) {
       return res.status(400).send("user email already exist")
     };
+
     // Hashed password by bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -31,12 +42,13 @@ export const signUp = async (req, res) => {
       email,
       phone,
       gender,
-
     };
 
     // create jwt
     const token = createJSONWebToken({ firstname, lastname, email, password }, JWT_SECRET_KEY, "10m");
-    const clientUrl = process.env.CLIENT_URL
+
+    const clientUrl = process.env.CLIENT_URL;
+
     //prepare mail
     const maildata = {
       email: email,
@@ -44,16 +56,17 @@ export const signUp = async (req, res) => {
       html: ` <h3>Hello ${firstname}</h3>
              <p> Cleack here to <a href="${clientUrl}/api/v1/auth/activate/${token}" target="_blank">Activate your account</a? </p>
         `
-    }
+    };
 
-    mailer(maildata)
+    mailer(maildata);
 
     // Generate token and respond with sanitized user
     res.status(201).json({
       status: 'success',
-      message: 'Verify your email  first',
+      message: 'Verify your email first',
       token: token
     });
+
   } catch (err) {
     res.status(401).send({
       message: err.message,
@@ -64,38 +77,40 @@ export const signUp = async (req, res) => {
 
 //verify email  and save the user in database
 export const emailVerify = async (req, res) => {
-
   try {
     const token = req.body.token
     if (!token) {
       return res.status(404).send('Token not found')
-    }
+    };
 
-    const decodedtoken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    const decodedtoken = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    console.log('deee', decodedtoken)
-
-    const userExist = await User.exists({ email: decodedtoken.email })
+    const userExist = await User.exists({ email: decodedtoken.email });
 
     if (userExist) {
-      return res.status(409).send('user with this email  already exist please login')
-    }
+      return res.status(409).send('user with this email already exist please login')
+    };
+
     if (!decodedtoken) {
       return res.status(400).send('user verification failed')
-    }
+    };
 
-    const user = await User.create(decodedtoken)
+    await User.create(decodedtoken);
+
     // token set into cokkie
     res.cookie("accessToken", token);
 
     res.status(201).send({
       status: "success",
       message: "user verification successful"
-    })
+    });
 
   } catch (err) {
+    res.status(400).send({
+      message: err.message
+    });
   }
-}
+};
 
 
 // login user
@@ -124,14 +139,12 @@ export const login = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      //generate token
       token: token,
       userId: isExist[0]._id
-    })
+    });
 
   } catch (err) {
-    res.status(400).json({
-      status: 'failed',
+    res.status(400).send({
       message: err.message
     })
   }

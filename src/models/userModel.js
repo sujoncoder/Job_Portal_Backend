@@ -34,12 +34,10 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-
         trim: true
     },
     gender: {
         type: String,
-
         enum: ["Male", "Female"]
     },
     country: {

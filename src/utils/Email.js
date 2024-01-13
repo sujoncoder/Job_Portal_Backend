@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import { SMTP_USER_NAME, SMTP_USER_PASSWORD } from '../secret/secret.js'
+import { SMTP_USER_NAME, SMTP_USER_PASSWORD } from '../secret/secret.js';
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -12,7 +12,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailer = async (maildata) => {
-
     try {
         const info = await transporter.sendMail({
             from: SMTP_USER_NAME,

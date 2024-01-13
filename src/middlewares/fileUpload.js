@@ -17,9 +17,9 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
     const fileName = path.extname(file.originalname);
     if (ALLOWED_FILE_TYPES.includes(fileName.substring(1))) {
-        cb(null, true); // Accept the file
+        cb(null, true);
     } else {
-        cb(new Error('Invalid file type. Only jpeg, jpg, png, files are allowed.'), false); // Reject the file
+        cb(new Error('Invalid file type. Only jpeg, jpg, png, files are allowed.'), false);
     }
 };
 
