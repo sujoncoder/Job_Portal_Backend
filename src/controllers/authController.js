@@ -35,17 +35,8 @@ export const signUp = async (req, res) => {
     // Hashed password by bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user without password in response
-    const userWithoutPassword = {
-      firstname,
-      lastname,
-      email,
-      phone,
-      gender,
-    };
-
     // create jwt
-    const token = createJSONWebToken({ firstname, lastname, email, password }, JWT_SECRET_KEY, "10m");
+    const token = createJSONWebToken({ firstname, lastname, email, password: hashedPassword }, JWT_SECRET_KEY, "10m");
 
     const clientUrl = process.env.CLIENT_URL;
 
@@ -53,9 +44,22 @@ export const signUp = async (req, res) => {
     const maildata = {
       email: email,
       subject: 'Account Activation Mail',
-      html: ` <h3>Hello ${firstname}</h3>
-             <p> Cleack here to <a href="${clientUrl}/api/v1/auth/activate/${token}" target="_blank">Activate your account</a? </p>
-        `
+      html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8;">
+              <h2 style="color: #333; text-align: center;">Account Activation</h2>
+              <p>Hello ${firstname},</p>
+              <p>Welcome to our platform! To activate your account, please click the link below:</p>
+              <p style="text-align: center; margin-top: 20px;">
+                  <a href="${clientUrl}/api/v1/auth/verify/${token}" style="display: inline-block; padding: 10px 20px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px;" target="_blank">Activate your account</a>
+              </p>
+              
+              <p style="font-size: 12px; color: #777;">Note: This activation link will expire in 5 minutes.</p> <br/>
+              <span>Thanks</span>
+              <p> from team 👨‍💻 </p>
+          </div>
+      `,
+
+      // ${clientUrl}/api/v1/auth/verify/${token}
     };
 
     mailer(maildata);
@@ -63,7 +67,7 @@ export const signUp = async (req, res) => {
     // Generate token and respond with sanitized user
     res.status(201).json({
       status: 'success',
-      message: 'Verify your email first',
+      message: 'An email with a verification link has been sent to your email id. Please click on that link to confirm your registration. Check your spam folder or promotions tab too.',
       token: token
     });
 
@@ -104,6 +108,10 @@ export const emailVerify = async (req, res) => {
       status: "success",
       message: "user verification successful"
     });
+
+    setTimeout(() => {
+
+    }, 2000)
 
   } catch (err) {
     res.status(400).send({
