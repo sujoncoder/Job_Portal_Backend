@@ -23,7 +23,10 @@ export const getUserbyId = async (req, res) => {
   const { id } = req.params
 
   try {
-    const userdata = await User.find({ _id: id })
+    // Define projection to exclude the "password" field
+    const projection = { password: 0 };
+
+    const userdata = await User.find({ _id: id }, projection)
     res.status(200).json({
       status: 'Success',
       data: userdata

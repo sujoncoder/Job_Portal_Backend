@@ -5,7 +5,7 @@ import mongoose from "mongoose"
 export const applyJob = async (req, res) => {
     try {
         const { userId, jobId, coverleter, resume, available, userEmail,
-            jobtitle, companyName } = req.body;
+        } = req.body;
 
         // Check if the user has already applied for this job
         const existingApplication = await ApplyJob.findOne({ userId, jobId });
@@ -32,8 +32,7 @@ export const applyJob = async (req, res) => {
             resume: req.file.path,
             available,
             userEmail,
-            jobtitle,
-            companyName
+
 
         });
 
@@ -81,7 +80,7 @@ export const getUserApplications = async (req, res) => {
     const { email } = req.query
 
     try {
-        const result = await ApplyJob.find({ userEmail: email })
+        const result = await ApplyJob.find({ userEmail: email }).populate('jobId')
 
         if (!result || result.length === 0) {
             // Handle the case where no job application is found with the given ID

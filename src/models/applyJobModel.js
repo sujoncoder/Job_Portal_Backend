@@ -32,17 +32,8 @@ const applyJobSchema = mongoose.Schema({
         type: String,
         required: true
 
-    },
-    jobtitle: {
-        type: String,
-        required: true
-
-    },
-    companyName: {
-        type: String,
-        required: true
-
     }
+
 })
 
 const ApplyJob = mongoose.model("ApplyJob", applyJobSchema);

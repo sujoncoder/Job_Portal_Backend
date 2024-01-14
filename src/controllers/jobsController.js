@@ -4,8 +4,8 @@ export const getJobs = async (req, res, next) => {
   try {
     const titleSearch = req.query.search || "";
     // const countrySearch = req.query.country || "";
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 1;
+    const page = Number(req.query.page)
+    const limit = Number(req.query.limit)
 
 
     const filters = { ...req.query }
