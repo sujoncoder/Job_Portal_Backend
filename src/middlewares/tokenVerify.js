@@ -3,9 +3,9 @@ import Intern from '../models/jobsModel.js';
 
 
 const verifyToken = async (req, res, next) => {
-    try {
-        const token = req.headers.authorization;
+    const token = req.headers.authorization;
 
+    try {
         if (!token) {
             return res.status(401).send('Unauthorized')
         };
@@ -15,10 +15,10 @@ const verifyToken = async (req, res, next) => {
         const accessToken = process.env.JWT_SECRET_KEY;
 
         jwt.verify(justToken, accessToken, async (err, decode) => {
-
             if (err) {
                 return res.status(401).send('invalid token')
-            }
+            };
+
             const userId = await Intern.findOne({ id: decode.userId })
             req.userId = userId
         });

@@ -3,3 +3,7 @@ DATABASE_URL = mongodb://localhost:27017/job_portal
 JWT_SECRET_KEY = "hQ4dS5ABINvsWRvTvfp8F6R47YqkxqVxdNYdya/lFn0="
 SMPT_USER_NAME = sujonsheikh.in@gmail.com
 SMPT_USER_PASSWORD = kdva lxni ecfk ddrq
+CLIENT_URL =   http://localhost:3000/
+CLOUD_NAME = di22w71uh
+CLOUD_API_KEY = 899484181977763
+CLOUD_API_SECRET = AHVf5ybSmnJLTzfbbYTG_E5YQAU
