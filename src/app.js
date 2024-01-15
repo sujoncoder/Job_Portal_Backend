@@ -21,7 +21,7 @@ const app = express();
 
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minutes
-    limit: 10, // Limit each IP to 10 requests per `window` (here, per 1 minutes).
+    limit: 10,
     message: "Too many request please try again later."
 });
 
@@ -50,6 +50,12 @@ cloudinary.config({
     cloud_name: CLOUD_NAME,
     api_key: CLOUD_API_KEY,
     api_secret: CLOUD_API_SECRET,
+});
+
+
+// root route
+app.get("/", (req, res) => {
+    res.status(200).send("Wellcome to our server")
 });
 
 

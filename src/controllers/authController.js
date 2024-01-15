@@ -6,6 +6,7 @@ import { createJSONWebToken } from "../utils/Token.js";
 import { EMAIL_REGEX, JWT_SECRET_KEY } from "../secret/secret.js";
 
 
+// user register
 export const signUp = async (req, res) => {
   const {
     firstname,
@@ -21,6 +22,7 @@ export const signUp = async (req, res) => {
     };
 
     const existEmail = await User.exists({ email });
+    console.log(existEmail);
 
     // email checked
     if (existEmail) {
