@@ -12,11 +12,6 @@ export const signUp = async (req, res) => {
     lastname,
     email,
     password,
-    phone,
-    gender,
-    country,
-    photo,
-    role
   } = req.body;
 
   try {
@@ -38,8 +33,6 @@ export const signUp = async (req, res) => {
     // create jwt
     const token = createJSONWebToken({ firstname, lastname, email, password: hashedPassword }, JWT_SECRET_KEY, "10m");
 
-    const clientUrl = process.env.CLIENT_URL;
-
     //prepare mail
     const maildata = {
       email: email,
@@ -50,7 +43,7 @@ export const signUp = async (req, res) => {
               <p>Hello ${firstname},</p>
               <p>Welcome to our platform! To activate your account, please click the link below:</p>
               <p style="text-align: center; margin-top: 20px;">
-                  <a href="${clientUrl}/api/v1/auth/verify/${token}" style="display: inline-block; padding: 10px 20px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px;" target="_blank">Activate your account</a>
+                  <a href="http://localhost:3000/verify/${token}" style="display: inline-block; padding: 10px 20px; background-color: #4caf50; color: #fff; text-decoration: none; border-radius: 5px;" target="_blank">Activate your account</a>
               </p>
               
               <p style="font-size: 12px; color: #777;">Note: This activation link will expire in 5 minutes.</p> <br/>
