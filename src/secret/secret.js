@@ -17,3 +17,7 @@ export const PDF_PATH = "./public/pdfs/"
 export const CLOUD_NAME = process.env.CLOUD_NAME
 export const CLOUD_API_KEY = process.env.CLOUD_API_KEY
 export const CLOUD_API_SECRET = process.env.CLOUD_API_SECRET
+export const DB_USER = process.env.DB_USER
+export const DB_PASS = process.env.DB_PASS
+
+console.log(DB_USER, DB_PASS)

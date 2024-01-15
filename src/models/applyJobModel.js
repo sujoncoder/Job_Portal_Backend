@@ -3,7 +3,6 @@ import { PDF_PATH } from "../secret/secret.js";
 const { ObjectId } = mongoose.Schema.Types;
 
 const applyJobSchema = mongoose.Schema({
-
     userId: {
         type: ObjectId,
         ref: "User"

@@ -1,6 +1,8 @@
 import multer from "multer";
 import { PDF_PATH } from "../secret/secret.js";
 import path from "path";
+
+
 // Set up Multer storage configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -10,7 +12,9 @@ const storage = multer.diskStorage({
         const fileName = Date.now() + path.extname(file.originalname);
         cb(null, fileName);
     },
-}); // You can change this to diskStorage if you want to store files on disk
+});
+
+
 const upload = multer({
     storage: storage,
 

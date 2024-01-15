@@ -21,10 +21,6 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         unique: true,
         trim: true,
-        validate: {
-            validator: (value) => EMAIL_REGEX.test(value),
-            message: 'Invalid email format',
-        }
     },
     password: {
         type: String,
@@ -34,12 +30,10 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-
         trim: true
     },
     gender: {
         type: String,
-
         enum: ["Male", "Female"]
     },
     country: {

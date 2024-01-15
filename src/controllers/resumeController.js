@@ -1,11 +1,11 @@
 import Resume from '../models/editResumeModel.js';
 
-// Controller function to handle creating a new resume
+
+// create resume
 export const createResume = async (req, res) => {
     const { name, email, phone, location, education, workExperience } = req.body;
 
     try {
-        // Create a new resume instance
         const newResume = new Resume({
             name,
             email,

@@ -10,9 +10,9 @@ import jwt, { decode } from "jsonwebtoken";
 export const updatePassword = async (req, res) => {
     const { prePass, newPass, confirmPass } = req.body;
     const id = req.params.id;
+
     try {
         const user = await User.findById(id);
-
         const comprPass = await bcrypt.compare(prePass, user.password);
 
         if (!comprPass) {
@@ -28,11 +28,13 @@ export const updatePassword = async (req, res) => {
 
         const updatePass = await User.findByIdAndUpdate(id, { password: hashPass }, { new: true });
 
+        res.status(200).json({
+            message: "Password update usccessfull",
+            updatePass
+        });
 
-
-        res.status(200).send(updatePass)
     } catch (error) {
-        res.status(404).json({ message: error.message })
+        res.status(404).send({ message: error.message })
     }
 };
 
@@ -42,11 +44,12 @@ export const deleteAccount = async (req, res) => {
     const id = req.params.id;
     try {
         const user = await User.findByIdAndDelete(id);
+
         if (!user) {
             return res.status(404).send("user not found")
         };
 
-        res.status(200).send({
+        res.status(200).json({
             message: "user delete successfull",
             user
         });
@@ -60,6 +63,7 @@ export const deleteAccount = async (req, res) => {
 export const updateEmail = async (req, res) => {
     const id = req.params.id;
     const { email } = req.body;
+
     try {
         const user = await User.findById(id);
 
@@ -69,6 +73,7 @@ export const updateEmail = async (req, res) => {
 
         // create jwt
         const token = createJSONWebToken({ email, id }, JWT_SECRET_KEY, "5m");
+
         //prepare mail
         const maildata = {
             email: email,
@@ -96,27 +101,27 @@ export const updateEmail = async (req, res) => {
 // verify email update email and save the user in database
 export const updateMailVerify = async (req, res) => {
     const token = req.body.token;
-    try {
 
+    try {
         if (!token) {
             return res.status(404).send('Token not found')
-        }
+        };
 
         const decodedtoken = jwt.verify(token, JWT_SECRET_KEY);
-        console.log(decodedtoken, "dcode")
-
 
         if (!decodedtoken) {
             return res.status(400).send('user verification failed')
         };
-        await User.findByIdAndUpdate({ _id: decodedtoken.id }, { email: decodedtoken.email })
+
+        await User.findByIdAndUpdate({ _id: decodedtoken.id }, { email: decodedtoken.email });
+
         // token set into cokkie
         res.cookie("accessToken", token);
 
         res.status(201).send({
             status: "success",
             message: "user verification successful"
-        })
+        });
 
     } catch (err) {
         res.status(400).send(err.message)
