@@ -138,7 +138,11 @@ export const login = async (req, res) => {
     };
 
     // token set into cokkie
-    res.cookie("accessToken", token);
+    res.cookie('accessToken', token, {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'None',
+    });
 
     res.status(200).json({
       status: 'success',
