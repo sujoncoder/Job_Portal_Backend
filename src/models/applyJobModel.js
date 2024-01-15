@@ -3,7 +3,6 @@ import { PDF_PATH } from "../secret/secret.js";
 const { ObjectId } = mongoose.Schema.Types;
 
 const applyJobSchema = mongoose.Schema({
-
     userId: {
         type: ObjectId,
         ref: "User"
@@ -12,6 +11,11 @@ const applyJobSchema = mongoose.Schema({
     jobId: {
         type: ObjectId,
         ref: "Job"
+
+    },
+    userEmail: {
+        type: String,
+        required: true
 
     },
     coverleter: {
@@ -27,8 +31,18 @@ const applyJobSchema = mongoose.Schema({
         type: String,
         required: true
 
+    },
+    jobtitle: {
+        type: String,
+        required: true
+
+    },
+    companyName: {
+        type: String,
+        required: true
+
     }
-})
+});
 
 const ApplyJob = mongoose.model("ApplyJob", applyJobSchema);
 
