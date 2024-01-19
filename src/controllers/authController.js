@@ -97,7 +97,7 @@ export const emailVerify = async (req, res) => {
     await User.create(decodedtoken);
 
     // token set into cokkie
-    res.cookie("accessToken", token, { sameSite: 'None', secure: true });
+    res.cookie("accessToken", token, { sameSite: 'None', secure: true, httpOnly: true, });
 
 
 
@@ -140,10 +140,7 @@ export const login = async (req, res) => {
     };
 
     // token set into cokkie
-    res.cookie('accessToken', token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration time in milliseconds (7 days in this example)
-
-    });
+    res.cookie("accessToken", token, { sameSite: 'None', secure: true, httpOnly: true, });
 
 
     res.status(200).json({
