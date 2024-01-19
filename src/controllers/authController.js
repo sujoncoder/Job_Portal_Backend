@@ -140,8 +140,7 @@ export const login = async (req, res) => {
     // token set into cokkie
     res.cookie('accessToken', token, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expiration time in milliseconds (7 days in this example)
-      httpOnly: true,
-      sameSite: 'Strict',
+
     });
 
 
