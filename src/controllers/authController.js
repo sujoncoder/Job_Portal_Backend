@@ -97,7 +97,9 @@ export const emailVerify = async (req, res) => {
     await User.create(decodedtoken);
 
     // token set into cokkie
-    res.cookie("accessToken", token);
+    res.cookie("accessToken", token, { sameSite: 'None', secure: true });
+
+
 
     res.status(201).send({
       status: "success",

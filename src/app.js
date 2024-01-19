@@ -25,13 +25,13 @@ const app = express();
 // buildin middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 
 // extrernal middlewares
 app.use(cors({
     origin: ["https://job-portal-kohl-six.vercel.app", "http://localhost:3000"],
 
-    credentials: true
+    credentials: true,
 }));
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://job-portal-kohl-six.vercel.app');
