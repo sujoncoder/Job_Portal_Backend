@@ -26,7 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.options('*', cors());
+
 // extrernal middlewares
 app.use(cors({
     origin: ["https://job-portal-kohl-six.vercel.app"],
