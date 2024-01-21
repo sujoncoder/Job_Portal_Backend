@@ -26,17 +26,19 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.options('*', cors());
 // extrernal middlewares
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://job-portal-kohl-six.vercel.app"],
 
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
 }));
 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', 'https://job-portal-kohl-six.vercel.app');
-//     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+
 //     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 //     res.header('Access-Control-Allow-Headers', 'Content-Type');
 //     next();
