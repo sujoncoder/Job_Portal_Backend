@@ -140,7 +140,14 @@ export const login = async (req, res) => {
     };
 
     // token set into cokkie
-    res.cookie("accessToken", token, { maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'None', secure: true, httpOnly: true, });
+    res.cookie("accessToken", token, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      domain: '.vercel.app',
+      path: '/',
+    });
 
 
     res.status(200).json({
