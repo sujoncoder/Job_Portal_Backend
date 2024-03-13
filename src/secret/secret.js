@@ -3,7 +3,8 @@ dotenv.config();
 
 
 export const PORT = process.env.PORT || 8000;
-export const DB = process.env.DATABASE_URL;
+export const DB_USER = process.env.DB_USER;
+export const DB_PASS = process.env.DB_PASS;
 export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 export const SMTP_USER_NAME = process.env.SMPT_USER_NAME;
 export const SMTP_USER_PASSWORD = process.env.SMPT_USER_PASSWORD;
